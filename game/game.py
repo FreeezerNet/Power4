@@ -38,5 +38,5 @@ class Game:
             self.board.printBoard()
             gameOver = self.playTurn()
             if not gameOver:
-                self.switch_player()
-        self.board.print_board()               
+                self.switchPlayer()
+        self.board.printBoard()               
