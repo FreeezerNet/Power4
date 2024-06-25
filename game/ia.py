@@ -1,3 +1,4 @@
+import random
 from board import Board
 class Ia:
     def __init__(self):
@@ -9,12 +10,23 @@ class Ia:
         
         for col in validLocation:
             row = board.verifPlace(col)
-            board.dropPiece(row,col,piece)
+            board.drawPiece(row,col,piece)
             if board.winMove(piece):
                 scores[col] += 100
-            board.dropPiece(row,col, 0)
+            board.drawPiece(row,col, 0)
         return scores
+    
     def bestMove(self, board, piece):
         scores = self.evaluateMoves(board, piece)
-        bestCol = max(scores, key=scores.get)
-        return bestCol        
+        best_score = -float('inf')
+        best_cols = []
+
+        for col, score in scores.items():
+            if score > best_score:
+                best_score = score
+                best_cols = [col]
+            elif score == best_score:
+                best_cols.append(col)
+
+        return random.choice(best_cols) if best_cols else None
+                

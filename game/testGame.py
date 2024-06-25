@@ -15,14 +15,14 @@ class TestGame(unittest.TestCase):
         self.assertEqual(self.board.cols, 7)
 
     def testDropPiece(self):
-        self.board.drop_piece(0, 3, 1)
+        self.board.drawPiece(0, 3, 1)
         self.assertEqual(self.board.board[0][3], 1)
 
     def testWinningMove(self):
-        self.board.drop_piece(0, 3, 1)
-        self.board.drop_piece(1, 3, 1)
-        self.board.drop_piece(2, 3, 1)
-        self.board.drop_piece(3, 3, 1)
+        self.board.drawPiece(0, 3, 1)
+        self.board.drawPiece(1, 3, 1)
+        self.board.drawPiece(2, 3, 1)
+        self.board.drawPiece(3, 3, 1)
         self.assertTrue(self.board.winMove(1))
 
     def testIaChooseBestMove(self):

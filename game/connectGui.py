@@ -20,8 +20,7 @@ class ConnectGui:
         for row in range(self.board.rows):
             button_row = []
             for col in range(self.board.cols):
-                button = tk.Button(self.root, text=" ", width=7, height=3,
-                                   command=lambda c=col: self.dropPiece(c))
+                button = tk.Button(self.root, text=" ", width=7, height=3, command=lambda c=col: self.dropPiece(c))
                 button.grid(row=row, column=col)
                 button_row.append(button)
             self.buttons.append(button_row)
@@ -29,8 +28,9 @@ class ConnectGui:
     def dropPiece(self, col):
         if self.board.locationValid(col):
             row = self.board.verifPlace(col)
-            self.board.dropPiece(row, col, 1)  # Humain
-            self.updateBoard()
+            if row is not None:
+                self.board.drawPiece(row, col, 1)  # Humain
+                self.updateBoard()
 
             if self.board.winMove(1):
                 messagebox.showinfo("Puissance 4", "Joueur 1 (Rouge) a gagné !")
@@ -39,8 +39,11 @@ class ConnectGui:
 
             # L'IA joue
             ia_col = self.ia.bestMove(self.board, 2)  # IA
-            self.board.dropPiece(self.board.verifPlace(ia_col), ia_col, 2)
-            self.updateBoard()
+            if ia_col is not None:
+                ia_row = self.board.verifPlace(ia_col)
+                if ia_row is not None:
+                    self.board.drawPiece(self.board.verifPlace(ia_col), ia_col, 2)
+                    self.updateBoard()
 
             if self.board.winMove(2):
                 messagebox.showinfo("Puissance 4", "IA (Jaune) a gagné !")

@@ -21,9 +21,9 @@ class Game:
         
         if self.board.locationValid(col):
             row = self.board.verifPlace(col)
-            self.board.dropPiece(row, col, self.currentPlayer + 1)
+            self.board.drawPiece(row, col, self.currentPlayer + 1)
             
-            if self.board.winMove(self.current_player_index + 1):
+            if self.board.check_victory(self.current_player_index + 1):
                 self.bord.printBoard()
                 print(f"{player.name} a gagné !")
                 return True
