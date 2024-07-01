@@ -4,6 +4,7 @@ import tkinter as tk
 from tkinter import messagebox
 from game.ia import ConnectFourAI
 from game.canvas_drawer import ConnectFourCanvas
+import matplotlib.pyplot as plt
 
 ROWS = 6
 COLS = 7
@@ -113,6 +114,40 @@ class ConnectFour:
         self.current_player = PLAYER1
         self.moves = []  # Reset the moves list
         self.canvas_drawer.reset()
+        self.plot_victory_percentage()
+
+    def plot_victory_percentage(self):
+        if not os.path.exists(CSV_FILE):
+            print("CSV file does not exist.")
+            return
+
+        df = pd.read_csv(CSV_FILE, sep=';')
+
+        total_games = len(df)
+        if total_games == 0:
+            print("No games recorded.")
+            return
+
+        ai_wins = (df['Winner'] == 'AI').sum()
+
+        ai_win_percentage = (ai_wins / total_games) * 100
+        player1_win_percentage = 100 - ai_win_percentage
+
+        labels = ['AI', 'Player1']
+        percentages = [ai_win_percentage, player1_win_percentage]
+
+        plt.figure(figsize=(10, 6))
+        bars = plt.bar(labels, percentages, color=['blue', 'green'])
+        plt.xlabel('Players')
+        plt.ylabel('Percentage of Victories')
+        plt.title('Percentage of Victories for Each Player')
+        plt.ylim(0, 100)
+
+        for bar, percentage in zip(bars, percentages):
+            height = bar.get_height()
+            plt.text(bar.get_x() + bar.get_width() / 2, height + 1, f'{percentage:.2f}%', ha='center')
+
+        plt.show()
 
 if __name__ == "__main__":
     root = tk.Tk()
